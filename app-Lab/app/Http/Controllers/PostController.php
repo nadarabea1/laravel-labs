@@ -7,14 +7,23 @@ use Illuminate\Http\Request;
 class PostController extends Controller
 {
     public function index(){
-        return view('posts.index');
+        $posts= \App\Models\Post::all();
+        return view('posts.index', ['posts'=> $posts]);
     }
     public function show(string $id){
-        return view('posts.show')->with(
-            ['id'=> $id, 'title' => "post $id title"]
-        );
+        $post= \App\Models\Post::find($id);
+        return view('posts.show', ['post'=> $post]);
+
 
     }
+    // public function destory(){
+    //     $del = \App\Models\Post::find(1);
+    //     $del->delete();
+    //     $posts = \App\Models\Post::onlyTrashed()->get();
+    //     return view('posts.destory', ['posts'=> $posts]);
+
+
+    // }
     public function create(){
         return view('posts.create');
 
@@ -23,9 +32,9 @@ class PostController extends Controller
 
     }
     public function edit(string $id){
-        return view('posts.edit')->with(
-            ['id'=> $id, 'title' => "post $id title"]
-        );
+        $post= \App\Models\Post::find($id);
+
+        return view('posts.edit', ['post'=> $post]);
     }
     public function update(Request $req ,string $id){
     }
