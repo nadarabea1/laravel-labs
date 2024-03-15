@@ -1,25 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Post</title>
-</head>
-<body>
-    <form method="POST" action="{{ route('posts.update', ['id' => $post->id]) }}">
+@extends("layouts.main")
+
+@section("title", "Edit Post")
+@section("content")
+<div class="container">
+    <form action="{{ route('posts.store') }}" method="POST">
         @csrf
-        @method('PUT')
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="title" name="title" value="{{ $post->title ?? old('title') }}">
+            @error('title')
+            <p>{{ $message }}</p>
+            @enderror
+        </div>
+        <div class="mb-3">
+            <label for="body" class="form-label">Body</label>
+            <textarea class="form-control" id="body" name="body" rows="3">{{ $post->body ?? old('body') }}</textarea>
+            @error('body')
+            <p>{{ $message }}</p>
+            @enderror
+        </div>
+        <div class="form-group">
+        <label for="enabled">Enabled:</label>
+        <select class="form-control" id="enabled" name="enabled">
+            <option value="1">True</option>
+            <option value="0">False</option>
+        </select>
+    </div>
+        <div class="mb-3">
+            <label for="published_at" class="form-label">Published At</label>
+            <input type="date" class="form-control" id="published_at" name="published_at" value="{{ $post->published_at ?? old('published_at') }}">
+            @error('published_at')
+            <p>{{ $message }}</p>
+            @enderror
+        </div>
 
-        <label for="title">Title:</label><br>
-        <input type="text" id="title" name="title" value="{{ $post->title }}"><br><br>
-
-        <label for="body">Body:</label><br>
-        <textarea id="content" name="content">{{ $post->body }}</textarea><br><br>
-
-        <label for="body">Enabled:</label><br>
-        <textarea id="content" name="content">{{ $post->enabled }}</textarea><br><br>
-
-        <button type="submit">Update</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-</body>
-</html>
+</div>
+@endsection

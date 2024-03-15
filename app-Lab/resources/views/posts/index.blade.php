@@ -1,26 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Postsss</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-</head>
-<body>
-    <table>
-        <tr>
-            <th>id</th>
-            <th>title</th>
-            <th>enabled</th>
-            <th>publish</th>
-        </tr>
-        @foreach($posts as $post)
+@extends("layouts.main")
+
+@section("title", "Create Post")
+
+@section("content")
+<table class="table">
+<thead class="thead-light">
+    <tr>
+    <th scope="col">ID</th>
+    <th scope="col">Title</th>
+    <th scope="col">Enabled</th>
+    <th scope="col">Published AT</th>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+    @foreach($posts as $post)
             <tr>
                 <td>{{ $post->id }}</td>
                 <td>
-                <a href="{{ route('posts.show', ['id' => $post->id]) }}">
-                    {{ $post->title }}
-                </a></td>
+                <a href="{{ route('posts.show', ['id' => $post->id]) }}" class="list-group-item list-group-item-action"> {{ $post->title }}</a>
+                </td>
                 <td>{{ $post->enabled }}</td>
                 <td>{{ $post->published_at }}</td>
                 <td>
@@ -28,9 +27,17 @@
                     <button class="btn btn-primary">Edit</button>
                 </a>
                 </td>
-                <td><button class="btn btn-danger">Delete</button></td>
+                <td>
+                    <form method="POST" action="{{ route('posts.destroy', ['id' => $post->id]) }}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+
             </tr>
         @endforeach
-    </table>
-</body>
-</html>
+</tbody>
+</table>
+
+@endsection
